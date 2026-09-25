@@ -11,7 +11,6 @@ export interface Step {
 
 export const steps: Step[] = [
   { title: "Craft a Wisplight for everyone", detail: "1 Wisp + 1 Silver at a Workbench, per person. Equip it in the accessory slot.", phase: "prep" },
-  { title: "Stock up on Black Metal", detail: "You're on Casual portal settings, so Black Metal (and everything else) can go straight through a portal — no boat run needed, just bring it whenever you head out.", phase: "prep" },
   { title: "Craft a Black Metal Axe", detail: "6 Fine Wood + 20 Black Metal + 5 Linen Thread at a Forge (level 4). Unlike the pickaxe, it needs no Mistlands-exclusive materials, so make it before you sail — you can't harvest a single piece of Yggdrasil Wood without it.", phase: "prep" },
   { title: "Upgrade your current weapons to max level", detail: "Take whatever you're each carrying to a Forge and push it as far as it'll go before you sail — a maxed Plains-tier weapon hits harder than a fresh Mistlands one. Check the wiki for the exact upgrade materials per weapon.", phase: "prep" },
   { title: "Upgrade your Fenris armor to max level (4)", detail: "If your crew is running Fenris gear, take it to a Forge and push it as far as it'll go before you sail — check the wiki for the exact upgrade materials at each level.", phase: "prep" },
