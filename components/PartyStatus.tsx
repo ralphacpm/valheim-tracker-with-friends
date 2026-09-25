@@ -25,7 +25,11 @@ export function PartyStatus({ myId }: { myId: string | null }) {
   return (
     <div className="my-goals-shell" style={{ display: "block" }}>
       <h2 className="col-heading" style={{ marginTop: 0 }}>Party Status</h2>
-      <p className="col-sub">Live progress from everyone in your crew who&apos;s opened this page.</p>
+      <p className="col-sub">
+        Live readiness from everyone in your crew who&apos;s opened this page — % of
+        &ldquo;The Path&rdquo; steps done, independent of which weapons they&apos;re
+        forging.
+      </p>
       <div className="party-list">
         {members.map((m) => {
           const pct = m.stepsTotal ? Math.round((m.stepsDone / m.stepsTotal) * 100) : 0;
@@ -37,13 +41,13 @@ export function PartyStatus({ myId }: { myId: string | null }) {
                   {m.name || "A Viking"}
                   {isMe ? " (you)" : ""}
                 </span>
-                <span className="party-member-pct">{pct}%</span>
+                <span className="party-member-pct">{pct}% ready</span>
               </div>
               <div className="progress-bar">
                 <div className="progress-fill" style={{ width: `${pct}%` }} />
               </div>
               <div className="party-member-sub">
-                {m.forgedCount} forged{m.goalCount ? ` of ${m.goalCount} goals chosen` : ""}
+                Separately: {m.forgedCount} forged{m.goalCount ? ` of ${m.goalCount} goals chosen` : ""}
               </div>
             </div>
           );
