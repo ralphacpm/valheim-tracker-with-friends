@@ -6,8 +6,8 @@ interface PartyMember {
   id: string;
   name: string;
   goalCount: number;
-  stepsDone: number;
-  stepsTotal: number;
+  readinessDone: number;
+  readinessTotal: number;
   forgedCount: number;
 }
 
@@ -27,12 +27,14 @@ export function PartyStatus({ myId }: { myId: string | null }) {
       <h2 className="col-heading" style={{ marginTop: 0 }}>Party Status</h2>
       <p className="col-sub">
         Live readiness from everyone in your crew who&apos;s opened this page — % of
-        &ldquo;The Path&rdquo; steps done, independent of which weapons they&apos;re
+        &ldquo;Before You Sail&rdquo; steps done, independent of which weapons they&apos;re
         forging.
       </p>
       <div className="party-list">
         {members.map((m) => {
-          const pct = m.stepsTotal ? Math.round((m.stepsDone / m.stepsTotal) * 100) : 0;
+          const pct = m.readinessTotal
+            ? Math.round((m.readinessDone / m.readinessTotal) * 100)
+            : 0;
           const isMe = m.id === myId;
           return (
             <div key={m.id} className={`party-member${isMe ? " party-member-you" : ""}`}>

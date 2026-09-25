@@ -13,6 +13,12 @@ export const steps: Step[] = [
   { title: "Craft a Wisplight for everyone", detail: "1 Wisp + 1 Silver at a Workbench, per person. Equip it in the accessory slot.", phase: "prep" },
   { title: "Stock up on Black Metal", detail: "You're on Casual portal settings, so Black Metal (and everything else) can go straight through a portal — no boat run needed, just bring it whenever you head out.", phase: "prep" },
   { title: "Craft a Black Metal Axe", detail: "6 Fine Wood + 20 Black Metal + 5 Linen Thread at a Forge (level 4). Unlike the pickaxe, it needs no Mistlands-exclusive materials, so make it before you sail — you can't harvest a single piece of Yggdrasil Wood without it.", phase: "prep" },
+  { title: "Grab a Grappling Hook", detail: "Mistlands terrain is steep and vertical — falls are a common way to lose gear or die mid-harvest run. Not strictly required, but well worth crafting before you go.", phase: "prep" },
+  { title: "Upgrade your Fenris armor to max level (4)", detail: "If your crew is running Fenris gear, take it to a Forge and push it as far as it'll go before you sail — check the wiki for the exact upgrade materials at each level.", phase: "prep" },
+  { title: "Buy a Megingjord from Haldor", detail: "950 gold at the Trader — permanently boosts your max carry weight by 150. One of the best gold-for-value buys before a long harvesting trip.", phase: "prep" },
+  { title: "Cook up Eyescream", detail: "One of the Mistlands-tier foods — check the wiki for the current recipe and stock enough for the whole crew before you land.", phase: "prep" },
+  { title: "Cook up Blood Pudding", detail: "Another Mistlands-tier food option — check the wiki for the recipe and bring a batch along with your Eyescream.", phase: "prep" },
+  { title: "Stock up on HP foods", detail: "Round out your food bar with high-HP options like Honey Glazed Chicken and Lox Meat Pie alongside your Mistlands food, so you're not squishy while exploring.", phase: "prep" },
   { title: "Sail in and land", detail: "Take a Longship, find a safe coastal landing spot, and build a small forward outpost (Workbench + bed).", phase: "mistlands" },
   { title: "Secure the outpost with Wisp Torches", detail: "Fuel-free, placeable, and permanently clear fog in a radius — ring your base with them.", phase: "mistlands" },
   { title: "Craft a Black Metal Pickaxe", detail: "25 Black Metal + 3 Yggdrasil Wood. Chop a Yggdrasil Shoot near your landing spot with your new axe to get the wood — you need this pickaxe before you can mine Black Marble or Soft Tissue.", phase: "mistlands" },
@@ -26,39 +32,10 @@ export const steps: Step[] = [
   { title: "Gear up and summon The Queen", detail: "Bring Eitr food and your best Mistlands-tier gear, then use the Sealbreaker to open her arena.", phase: "mistlands" },
 ];
 
-export interface GearItem {
-  tool: string;
-  need: string;
-  detail: string;
-}
-
-export const gearItems: GearItem[] = [
-  {
-    tool: "Black Metal Axe (or Jotun Bane)",
-    need: "Needed for Yggdrasil Wood",
-    detail: "Chops Yggdrasil Shoots to get Yggdrasil Wood — regular axes do nothing to them. Recipe: 6 Fine Wood + 20 Black Metal + 5 Linen Thread, at Forge level 4. Small shoots can also be broken with Mistlands-tier weapons like Skoll/Hati if you'd rather skip the axe.",
-  },
-  {
-    tool: "Black Metal Pickaxe",
-    need: "Needed for Marble & Tissue",
-    detail: "Required to mine Giant Remains for Black Marble and Soft Tissue, and later Flametal in Ashlands. Recipe: 25 Black Metal + 3 Yggdrasil Wood.",
-  },
-  {
-    tool: "Dvergr Extractor(s)",
-    need: "Needed for Sap Extractors",
-    detail: "Looted from glowing-rune crates inside Dvergr settlements. Looting one aggros nearby Dvergr — clear the area first.",
-  },
-  {
-    tool: "Wisplight (per person)",
-    need: "Needed to see at all",
-    detail: "1 Wisp + 1 Silver at a Workbench. Without it, the permanent fog makes exploring and harvesting anything nearly impossible.",
-  },
-  {
-    tool: "Grappling Hook",
-    need: "Recommended",
-    detail: "Mistlands terrain is steep and vertical — falls are a common way to lose gear or die mid-harvest run. Not strictly required, but well worth having.",
-  },
-];
+// How many of the leading `steps` entries are "Before You Sail" prep —
+// i.e. what "readiness" means. Relies on all prep steps being contiguous
+// at the start of the array (enforced by convention above).
+export const readinessStepCount = steps.filter((s) => s.phase === "prep").length;
 
 export const materialSources: Record<string, string> = {
   "Fine Wood": "Chop Birch/Oak trees with a Bronze Axe or better (Meadows, Plains)",

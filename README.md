@@ -41,13 +41,17 @@ link.
 - `player_goals` — one row per (player, weapon) they've marked as forged.
 - `player_stash` — one row per (player, material) with how many they have.
 
-The step list, gear checklist, weapon/staff recipes, and material sourcing
-notes are static data ported verbatim from the original HTML page into
-`lib/data.ts` — they aren't stored in the database.
+The step list, weapon/staff recipes, and material sourcing notes are
+static data in `lib/data.ts` — they aren't stored in the database. The
+first `readinessStepCount` entries of `steps` are the "Before You Sail"
+prep steps; that's the scope "readiness" in Party Status is computed over
+(see `app/api/party/route.ts`) — it's independent of which goals a player
+picked or forged.
 
-The "Gear to Forge" checklist (harvesting tools) intentionally stays in
-`localStorage` per browser, same as the original page — it doesn't need to
-be shared.
+There's no separate "Gear to Forge" checklist — the harvesting tools that
+used to live there (Black Metal Axe, Pickaxe, Dvergr Extractor, Wisplight)
+are tracked once, as steps in "Before You Sail" / "In the Mistlands",
+rather than duplicated in a second sidebar list.
 
 ## Running locally
 
@@ -83,7 +87,7 @@ players, progress, forged goals, and stash — the tables themselves stay in
 place, so nobody needs to re-deploy. Everyone's browser will show the
 onboarding screen again next time they open the page.
 
-The "Gear to Forge" checklist and browser identity live in `localStorage`,
-so clearing the shared database won't reset those — ask everyone to hit
-**Reset Checklist** on the page, or clear site data in their browser, if
-you want a truly clean slate.
+Browser identity (the player UUID) lives in `localStorage`, so clearing
+the shared database won't reset that — ask everyone to hit **Reset
+Checklist** on the page, or clear site data in their browser, if you want
+a truly clean slate.

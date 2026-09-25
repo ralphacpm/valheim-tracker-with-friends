@@ -5,7 +5,6 @@ import { steps, goals } from "@/lib/data";
 import { newPlayerId, PLAYER_ID_STORAGE_KEY } from "@/lib/identity";
 import { Onboarding } from "./Onboarding";
 import { StepsList } from "./StepsSection";
-import { GearChecklist } from "./GearChecklist";
 import { GoalsBrowser } from "./GoalsBrowser";
 import { MyGoals } from "./MyGoals";
 import { PartyStatus } from "./PartyStatus";
@@ -16,8 +15,6 @@ interface Profile {
   goalIdxs: number[];
 }
 
-const GEAR_STORAGE_KEY = "mistlands-gear-v1";
-
 export function TrackerApp() {
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -27,7 +24,6 @@ export function TrackerApp() {
   const [forgedGoals, setForgedGoals] = useState<Set<number>>(new Set());
   const [stash, setStash] = useState<Record<string, number>>({});
   const [browseSelected, setBrowseSelected] = useState<Set<number>>(new Set());
-  const [gearResetToken, setGearResetToken] = useState(0);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -196,12 +192,6 @@ export function TrackerApp() {
         body: JSON.stringify({ playerId, stepIndex: idx, done: false }),
       }).catch(() => {});
     });
-    try {
-      localStorage.removeItem(GEAR_STORAGE_KEY);
-    } catch {
-      // ignore
-    }
-    setGearResetToken((t) => t + 1);
   }
 
   const total = steps.length;
@@ -285,35 +275,30 @@ export function TrackerApp() {
 
       <PartyStatus myId={playerId} />
 
-      <div className="layout">
-        <div className="col-main">
-          <h2 className="col-heading">The Path</h2>
-          <p className="col-sub">Follow in order — each stage sets up the next.</p>
+      <div className="col-main">
+        <h2 className="col-heading">The Path</h2>
+        <p className="col-sub">Follow in order — each stage sets up the next.</p>
 
-          <h3 className="sub-heading">Before You Sail</h3>
-          <p className="sub-heading-note">Prep work done back at your regular base, ahead of the trip.</p>
-          <StepsList
-            steps={steps.filter((s) => s.phase === "prep")}
-            offset={0}
-            doneSteps={doneSteps}
-            onToggle={toggleStep}
-          />
+        <h3 className="sub-heading">Before You Sail</h3>
+        <p className="sub-heading-note">
+          Prep work done back at your regular base, ahead of the trip — this is what
+          &ldquo;readiness&rdquo; in Party Status tracks.
+        </p>
+        <StepsList
+          steps={steps.filter((s) => s.phase === "prep")}
+          offset={0}
+          doneSteps={doneSteps}
+          onToggle={toggleStep}
+        />
 
-          <h3 className="sub-heading">In the Mistlands</h3>
-          <p className="sub-heading-note">Everything from here on happens once you&apos;ve actually landed.</p>
-          <StepsList
-            steps={steps.filter((s) => s.phase !== "prep")}
-            offset={steps.findIndex((s) => s.phase !== "prep")}
-            doneSteps={doneSteps}
-            onToggle={toggleStep}
-          />
-        </div>
-
-        <div className="col-side">
-          <h2 className="col-heading">Gear to Forge</h2>
-          <p className="col-sub">Some materials won&apos;t yield without the right tool in hand.</p>
-          <GearChecklist key={gearResetToken} />
-        </div>
+        <h3 className="sub-heading">In the Mistlands</h3>
+        <p className="sub-heading-note">Everything from here on happens once you&apos;ve actually landed.</p>
+        <StepsList
+          steps={steps.filter((s) => s.phase !== "prep")}
+          offset={steps.findIndex((s) => s.phase !== "prep")}
+          doneSteps={doneSteps}
+          onToggle={toggleStep}
+        />
       </div>
 
       <button className="reset-btn" onClick={resetChecklist}>
