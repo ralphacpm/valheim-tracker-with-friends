@@ -29,7 +29,13 @@ export const steps: Step[] = [
   { title: "Grab a Grappling Hook", detail: "Needs some Mistlands progress under your belt first — check the wiki for the exact recipe. Mistlands terrain is steep and vertical, so falls are a common way to lose gear or die mid-harvest run. Not strictly required, but well worth crafting once you can.", phase: "mistlands" },
   { title: "Build a Galdr Table", detail: "Craft the magic staves using Refined Eitr.", phase: "mistlands" },
   { title: "Find the Infested Mines and collect Sealbreaker Fragments", detail: "Located beneath Black Marble ruins. Collect 9 Fragments, then craft the <code>Sealbreaker</code>.", phase: "mistlands" },
-  { title: "Gear up and summon The Queen", detail: "Bring Eitr food and your best Mistlands-tier gear, then use the Sealbreaker to open her arena.", phase: "mistlands" },
+  { title: "Craft a full set of Carapace Armor", detail: "The highest armor rating available in Mistlands — craft it at your Black Forge. Check the wiki for the exact material costs per piece.", phase: "mistlands" },
+  { title: "Craft a Feather Cape", detail: "Lets you shrug off her knockback and fall damage without eating a hit — near-essential for the fight. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Forge your Queen-fight weapon", detail: "If you haven't already, craft your pick from Choose Your Goal above. Krom's secondary attack is the community's top pick for sustained single-target damage; a Polearm or the Demolisher is great for clearing Seeker Broods off you. Staff of Embers also clears waves well, and Staff of Protection is a strong support pick for group play.", phase: "mistlands" },
+  { title: "Brew Poison Resistance Mead", detail: "Crucial — her Bite attack deals Poison damage once she drops below 70% HP. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Brew Major Healing Mead", detail: "Especially important if you're melee — you'll be eating hits up close. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Brew Lingering Stamina Mead", detail: "This is a long fight with a lot of dodging and repositioning — don't run dry. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Summon The Queen", detail: "Bring your Eitr food, gear, and meads, then use the Sealbreaker to open her arena. The entrance itself is safe from her attacks — duck back in to heal or repair mid-fight.", phase: "mistlands" },
 ];
 
 // How many of the leading `steps` entries are "Before You Sail" prep —
