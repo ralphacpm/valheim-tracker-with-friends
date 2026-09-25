@@ -11,54 +11,37 @@ export interface Step {
 
 export const steps: Step[] = [
   { title: "Craft a Wisplight for everyone", detail: "1 Wisp + 1 Silver at a Workbench, per person. Equip it in the accessory slot.", phase: "prep" },
-  { title: "Stock up on Black Metal", detail: "You're on Casual portal settings, so Black Metal (and everything else) can go straight through a portal — no boat run needed, just bring it whenever you head out.", phase: "prep" },
-  { title: "Craft a Black Metal Axe", detail: "6 Fine Wood + 20 Black Metal + 5 Linen Thread at a Forge (level 4). Unlike the pickaxe, it needs no Mistlands-exclusive materials, so make it before you sail — you can't harvest a single piece of Yggdrasil Wood without it.", phase: "prep" },
+  { title: "Craft a Black Metal Axe", detail: "6 Fine Wood + 20 Black Metal + 5 Linen Thread at a Forge (level 4). Make it before you sail — you can't harvest a single piece of Yggdrasil Wood without it, and the Pickaxe below needs that wood.", phase: "prep" },
+  { title: "Craft a Black Metal Pickaxe", detail: "25 Black Metal + 3 Yggdrasil Wood. Exception on this list: Yggdrasil Wood only exists in Mistlands, so you can't actually finish this one before you sail — it's really the first thing you craft after landing and chopping a Yggdrasil Shoot with your new Axe. Listed here as a reminder to have the Black Metal ready.", phase: "prep" },
+  { title: "Upgrade your current weapons to max level", detail: "Take whatever you're each carrying to a Forge and push it as far as it'll go before you sail — a maxed Plains-tier weapon hits harder than a fresh Mistlands one. Check the wiki for the exact upgrade materials per weapon.", phase: "prep" },
+  { title: "Upgrade your Fenris armor to max level (4)", detail: "If your crew is running Fenris gear, take it to a Forge and push it as far as it'll go before you sail — check the wiki for the exact upgrade materials at each level.", phase: "prep" },
+  { title: "Buy a Megingjord from Haldor", detail: "950 gold at the Trader — permanently boosts your max carry weight by 150. One of the best gold-for-value buys before a long harvesting trip.", phase: "prep" },
+  { title: "Cook up Eyescream", detail: "One of the Mistlands-tier foods — check the wiki for the current recipe and stock enough for the whole crew before you land.", phase: "prep" },
+  { title: "Cook up Blood Pudding", detail: "Another Mistlands-tier food option — check the wiki for the recipe and bring a batch along with your Eyescream.", phase: "prep" },
+  { title: "Stock up on HP foods", detail: "Round out your food bar with high-HP options like Honey Glazed Chicken and Lox Meat Pie alongside your Mistlands food, so you're not squishy while exploring.", phase: "prep" },
   { title: "Sail in and land", detail: "Take a Longship, find a safe coastal landing spot, and build a small forward outpost (Workbench + bed).", phase: "mistlands" },
   { title: "Secure the outpost with Wisp Torches", detail: "Fuel-free, placeable, and permanently clear fog in a radius — ring your base with them.", phase: "mistlands" },
-  { title: "Craft a Black Metal Pickaxe", detail: "25 Black Metal + 3 Yggdrasil Wood. Chop a Yggdrasil Shoot near your landing spot with your new axe to get the wood — you need this pickaxe before you can mine Black Marble or Soft Tissue.", phase: "mistlands" },
-  { title: "Explore carefully", detail: "Move slowly, stay grouped, and listen for Seekers and Gjalls. Collect Black Marble and Soft Tissue from <code>Giant Remains</code> — skeletal rib cages and skulls scattered across the biome. Ribs give Black Marble only; skulls hold a Soft Tissue node inside, best mined from the bottom up so it collapses at once. Also gather more Yggdrasil Wood as you go.", phase: "mistlands" },
-  { title: "Raid Dvergr settlements", detail: "Loot the glowing-rune crates for a <code>Dvergr Extractor</code> — this aggros nearby Dvergr, so clear the area first.", phase: "mistlands" },
+  { title: "Explore carefully", detail: "Move slowly, stay grouped, and listen for Seekers and Gjalls. Collect Black Marble and Soft Tissue from <code>Giant Remains</code> — skeletal rib cages and skulls scattered across the biome. Ribs give Black Marble only; skulls hold a Soft Tissue node inside, best mined from the bottom up so it collapses at once. Also gather more Yggdrasil Wood as you go, and mine any discarded armor or swords you spot — they yield Scrap Iron, a handy source beyond Swamp crypts.", phase: "mistlands" },
+  { title: "Raid Dvergr settlements", detail: "Loot the glowing-rune crates for a <code>Dvergr Extractor</code> — this aggros nearby Dvergr, so clear the area first. Some towers hide a dungeon entrance in the basement, especially ones occupied by Seekers instead of Dvergr — worth checking for extra loot.", phase: "mistlands" },
   { title: "Build Sap Extractors", detail: "10 Yggdrasil Wood + 5 Black Metal + 1 Dvergr Extractor, placed on Ancient Roots. Spread a few across different roots and empty them regularly.", phase: "mistlands" },
   { title: "Build an Eitr Refinery", detail: "Combines Sap + Soft Tissue into Refined Eitr.", phase: "mistlands" },
   { title: "Build a Black Forge", detail: "Unlocks Black Metal gear and Carapace Armor.", phase: "mistlands" },
+  { title: "Grab a Grappling Hook", detail: "Needs some Mistlands progress under your belt first — check the wiki for the exact recipe. Mistlands terrain is steep and vertical, so falls are a common way to lose gear or die mid-harvest run. Not strictly required, but well worth crafting once you can.", phase: "mistlands" },
   { title: "Build a Galdr Table", detail: "Craft the magic staves using Refined Eitr.", phase: "mistlands" },
   { title: "Find the Infested Mines and collect Sealbreaker Fragments", detail: "Located beneath Black Marble ruins. Collect 9 Fragments, then craft the <code>Sealbreaker</code>.", phase: "mistlands" },
-  { title: "Gear up and summon The Queen", detail: "Bring Eitr food and your best Mistlands-tier gear, then use the Sealbreaker to open her arena.", phase: "mistlands" },
+  { title: "Craft a full set of Carapace Armor", detail: "The highest armor rating available in Mistlands — craft it at your Black Forge. Check the wiki for the exact material costs per piece.", phase: "mistlands" },
+  { title: "Craft a Feather Cape", detail: "Lets you shrug off her knockback and fall damage without eating a hit — near-essential for the fight. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Forge your Queen-fight weapon", detail: "If you haven't already, craft your pick from Choose Your Goal above. Krom's secondary attack is the community's top pick for sustained single-target damage; a Polearm or the Demolisher is great for clearing Seeker Broods off you. Staff of Embers also clears waves well, and Staff of Protection is a strong support pick for group play.", phase: "mistlands" },
+  { title: "Brew Poison Resistance Mead", detail: "Crucial — her Bite attack deals Poison damage once she drops below 70% HP. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Brew Major Healing Mead", detail: "Especially important if you're melee — you'll be eating hits up close. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Brew Lingering Stamina Mead", detail: "This is a long fight with a lot of dodging and repositioning — don't run dry. Check the wiki for the recipe.", phase: "mistlands" },
+  { title: "Summon The Queen", detail: "Bring your Eitr food, gear, and meads, then use the Sealbreaker to open her arena. The entrance itself is safe from her attacks — duck back in to heal or repair mid-fight.", phase: "mistlands" },
 ];
 
-export interface GearItem {
-  tool: string;
-  need: string;
-  detail: string;
-}
-
-export const gearItems: GearItem[] = [
-  {
-    tool: "Black Metal Axe (or Jotun Bane)",
-    need: "Needed for Yggdrasil Wood",
-    detail: "Chops Yggdrasil Shoots to get Yggdrasil Wood — regular axes do nothing to them. Recipe: 6 Fine Wood + 20 Black Metal + 5 Linen Thread, at Forge level 4. Small shoots can also be broken with Mistlands-tier weapons like Skoll/Hati if you'd rather skip the axe.",
-  },
-  {
-    tool: "Black Metal Pickaxe",
-    need: "Needed for Marble & Tissue",
-    detail: "Required to mine Giant Remains for Black Marble and Soft Tissue, and later Flametal in Ashlands. Recipe: 25 Black Metal + 3 Yggdrasil Wood.",
-  },
-  {
-    tool: "Dvergr Extractor(s)",
-    need: "Needed for Sap Extractors",
-    detail: "Looted from glowing-rune crates inside Dvergr settlements. Looting one aggros nearby Dvergr — clear the area first.",
-  },
-  {
-    tool: "Wisplight (per person)",
-    need: "Needed to see at all",
-    detail: "1 Wisp + 1 Silver at a Workbench. Without it, the permanent fog makes exploring and harvesting anything nearly impossible.",
-  },
-  {
-    tool: "Grappling Hook",
-    need: "Recommended",
-    detail: "Mistlands terrain is steep and vertical — falls are a common way to lose gear or die mid-harvest run. Not strictly required, but well worth having.",
-  },
-];
+// How many of the leading `steps` entries are "Before You Sail" prep —
+// i.e. what "readiness" means. Relies on all prep steps being contiguous
+// at the start of the array (enforced by convention above).
+export const readinessStepCount = steps.filter((s) => s.phase === "prep").length;
 
 export const materialSources: Record<string, string> = {
   "Fine Wood": "Chop Birch/Oak trees with a Bronze Axe or better (Meadows, Plains)",

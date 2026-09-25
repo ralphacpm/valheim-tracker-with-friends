@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { steps, goals } from "@/lib/data";
 import { newPlayerId, PLAYER_ID_STORAGE_KEY } from "@/lib/identity";
 import { Onboarding } from "./Onboarding";
 import { StepsList } from "./StepsSection";
-import { GearChecklist } from "./GearChecklist";
 import { GoalsBrowser } from "./GoalsBrowser";
 import { MyGoals } from "./MyGoals";
 import { PartyStatus } from "./PartyStatus";
@@ -16,8 +16,6 @@ interface Profile {
   goalIdxs: number[];
 }
 
-const GEAR_STORAGE_KEY = "mistlands-gear-v1";
-
 export function TrackerApp() {
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -27,7 +25,7 @@ export function TrackerApp() {
   const [forgedGoals, setForgedGoals] = useState<Set<number>>(new Set());
   const [stash, setStash] = useState<Record<string, number>>({});
   const [browseSelected, setBrowseSelected] = useState<Set<number>>(new Set());
-  const [gearResetToken, setGearResetToken] = useState(0);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     let id = "";
@@ -51,7 +49,19 @@ export function TrackerApp() {
     setPlayerId(id);
 
     fetch(`/api/me?playerId=${id}`)
-      .then((r) => r.json())
+      .then(async (r) => {
+        if (!r.ok) {
+          // Surface the server's error message when it sent JSON (our API
+          // routes do); fall back to the status code otherwise (e.g. an
+          // unhandled exception renders an HTML error page instead).
+          const message = await r
+            .json()
+            .then((body) => body?.error)
+            .catch(() => null);
+          throw new Error(message || `Server returned ${r.status}`);
+        }
+        return r.json();
+      })
       .then((data) => {
         if (data.player) {
           setProfile({ name: data.player.name, goalIdxs: data.player.goalIdxs });
@@ -66,7 +76,14 @@ export function TrackerApp() {
         setStash(data.stash || {});
         setLoaded(true);
       })
-      .catch(() => setLoaded(true));
+      .catch((err) => {
+        // Couldn't reach the database — still let them onboard rather than
+        // rendering a blank page. Submitting will fail too until the DB is
+        // reachable, but at least the problem is visible and diagnosable.
+        setLoadError(err?.message || "Couldn't load your saved progress.");
+        setShowOnboarding(true);
+        setLoaded(true);
+      });
   }, []);
 
   const toggleStep = useCallback(
@@ -145,13 +162,19 @@ export function TrackerApp() {
     setBrowseSelected(new Set(goalIdxs));
     setShowOnboarding(false);
     try {
-      await fetch("/api/players", {
+      const res = await fetch("/api/players", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ playerId, name, goalIdxs }),
       });
-    } catch {
-      // best-effort — party status will just be missing/stale until retried
+      if (!res.ok) throw new Error(`Server returned ${res.status}`);
+      setLoadError(null);
+    } catch (err) {
+      // Saved locally in the UI, but the crew won't see it until this
+      // succeeds — surface that rather than pretending it's shared.
+      setLoadError(
+        (err as Error)?.message || "Couldn't save your profile to the shared database."
+      );
     }
   }
 
@@ -170,12 +193,6 @@ export function TrackerApp() {
         body: JSON.stringify({ playerId, stepIndex: idx, done: false }),
       }).catch(() => {});
     });
-    try {
-      localStorage.removeItem(GEAR_STORAGE_KEY);
-    } catch {
-      // ignore
-    }
-    setGearResetToken((t) => t + 1);
   }
 
   const total = steps.length;
@@ -212,6 +229,13 @@ export function TrackerApp() {
         />
       )}
 
+      {loadError && (
+        <p className="error-note">
+          Couldn&apos;t reach the shared database ({loadError}) — progress won&apos;t save
+          or sync with your crew until this is fixed. Reload once it&apos;s working.
+        </p>
+      )}
+
       <header>
         <div className="rune-divider">ᛗᛁᛊᛏᛚᚨᚾᛞᛊ</div>
         <h1>{pageTitle}</h1>
@@ -227,6 +251,9 @@ export function TrackerApp() {
           >
             Edit My Goal ✎
           </span>
+          <Link href="/materials" className="badge" style={{ textDecoration: "none" }}>
+            Where to Get Stuff →
+          </Link>
         </div>
       </header>
 
@@ -252,35 +279,30 @@ export function TrackerApp() {
 
       <PartyStatus myId={playerId} />
 
-      <div className="layout">
-        <div className="col-main">
-          <h2 className="col-heading">The Path</h2>
-          <p className="col-sub">Follow in order — each stage sets up the next.</p>
+      <div className="col-main">
+        <h2 className="col-heading">The Path</h2>
+        <p className="col-sub">Follow in order — each stage sets up the next.</p>
 
-          <h3 className="sub-heading">Before You Sail</h3>
-          <p className="sub-heading-note">Prep work done back at your regular base, ahead of the trip.</p>
-          <StepsList
-            steps={steps.filter((s) => s.phase === "prep")}
-            offset={0}
-            doneSteps={doneSteps}
-            onToggle={toggleStep}
-          />
+        <h3 className="sub-heading">Before You Sail</h3>
+        <p className="sub-heading-note">
+          Prep work done back at your regular base, ahead of the trip — this is what
+          &ldquo;readiness&rdquo; in Party Status tracks.
+        </p>
+        <StepsList
+          steps={steps.filter((s) => s.phase === "prep")}
+          offset={0}
+          doneSteps={doneSteps}
+          onToggle={toggleStep}
+        />
 
-          <h3 className="sub-heading">In the Mistlands</h3>
-          <p className="sub-heading-note">Everything from here on happens once you&apos;ve actually landed.</p>
-          <StepsList
-            steps={steps.filter((s) => s.phase !== "prep")}
-            offset={steps.findIndex((s) => s.phase !== "prep")}
-            doneSteps={doneSteps}
-            onToggle={toggleStep}
-          />
-        </div>
-
-        <div className="col-side">
-          <h2 className="col-heading">Gear to Forge</h2>
-          <p className="col-sub">Some materials won&apos;t yield without the right tool in hand.</p>
-          <GearChecklist key={gearResetToken} />
-        </div>
+        <h3 className="sub-heading">In the Mistlands</h3>
+        <p className="sub-heading-note">Everything from here on happens once you&apos;ve actually landed.</p>
+        <StepsList
+          steps={steps.filter((s) => s.phase !== "prep")}
+          offset={steps.findIndex((s) => s.phase !== "prep")}
+          doneSteps={doneSteps}
+          onToggle={toggleStep}
+        />
       </div>
 
       <button className="reset-btn" onClick={resetChecklist}>

@@ -145,17 +145,6 @@ h1 {
   border-radius: 4px;
   transition: width 0.3s ease;
 }
-.layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  align-items: start;
-}
-@media (min-width: 860px) {
-  .layout {
-    grid-template-columns: 1.65fr 1fr;
-  }
-}
 .col-heading {
   font-family: 'Cinzel', serif;
   font-size: 15px;
