@@ -28,6 +28,7 @@ export function TrackerApp() {
   const [stash, setStash] = useState<Record<string, number>>({});
   const [browseSelected, setBrowseSelected] = useState<Set<number>>(new Set());
   const [gearResetToken, setGearResetToken] = useState(0);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     let id = "";
@@ -51,7 +52,19 @@ export function TrackerApp() {
     setPlayerId(id);
 
     fetch(`/api/me?playerId=${id}`)
-      .then((r) => r.json())
+      .then(async (r) => {
+        if (!r.ok) {
+          // Surface the server's error message when it sent JSON (our API
+          // routes do); fall back to the status code otherwise (e.g. an
+          // unhandled exception renders an HTML error page instead).
+          const message = await r
+            .json()
+            .then((body) => body?.error)
+            .catch(() => null);
+          throw new Error(message || `Server returned ${r.status}`);
+        }
+        return r.json();
+      })
       .then((data) => {
         if (data.player) {
           setProfile({ name: data.player.name, goalIdxs: data.player.goalIdxs });
@@ -66,7 +79,14 @@ export function TrackerApp() {
         setStash(data.stash || {});
         setLoaded(true);
       })
-      .catch(() => setLoaded(true));
+      .catch((err) => {
+        // Couldn't reach the database — still let them onboard rather than
+        // rendering a blank page. Submitting will fail too until the DB is
+        // reachable, but at least the problem is visible and diagnosable.
+        setLoadError(err?.message || "Couldn't load your saved progress.");
+        setShowOnboarding(true);
+        setLoaded(true);
+      });
   }, []);
 
   const toggleStep = useCallback(
@@ -145,13 +165,19 @@ export function TrackerApp() {
     setBrowseSelected(new Set(goalIdxs));
     setShowOnboarding(false);
     try {
-      await fetch("/api/players", {
+      const res = await fetch("/api/players", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ playerId, name, goalIdxs }),
       });
-    } catch {
-      // best-effort — party status will just be missing/stale until retried
+      if (!res.ok) throw new Error(`Server returned ${res.status}`);
+      setLoadError(null);
+    } catch (err) {
+      // Saved locally in the UI, but the crew won't see it until this
+      // succeeds — surface that rather than pretending it's shared.
+      setLoadError(
+        (err as Error)?.message || "Couldn't save your profile to the shared database."
+      );
     }
   }
 
@@ -210,6 +236,13 @@ export function TrackerApp() {
           onSubmit={submitOnboarding}
           onSkip={skipOnboarding}
         />
+      )}
+
+      {loadError && (
+        <p className="error-note">
+          Couldn&apos;t reach the shared database ({loadError}) — progress won&apos;t save
+          or sync with your crew until this is fixed. Reload once it&apos;s working.
+        </p>
       )}
 
       <header>
