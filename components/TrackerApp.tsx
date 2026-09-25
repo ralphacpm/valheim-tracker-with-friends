@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { steps, goals } from "@/lib/data";
 import { newPlayerId, PLAYER_ID_STORAGE_KEY } from "@/lib/identity";
 import { Onboarding } from "./Onboarding";
@@ -250,6 +251,9 @@ export function TrackerApp() {
           >
             Edit My Goal ✎
           </span>
+          <Link href="/materials" className="badge" style={{ textDecoration: "none" }}>
+            Where to Get Stuff →
+          </Link>
         </div>
       </header>
 
